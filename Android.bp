@@ -1,0 +1,22 @@
+android_library {
+    name: "Naika-UIKit",
+    platform_apis: true,
+    defaults: [
+        "SettingsLibDefaults",
+        "SettingsLib-search-defaults",
+    ],
+
+    srcs: ["src/**/*.kt"],
+    resource_dirs: [
+        "res",
+    ],
+
+    static_libs: [
+        "androidx.core_core",
+        "androidx.appcompat_appcompat",
+        "androidx.cardview_cardview",
+        "androidx.preference_preference",
+        "androidx.recyclerview_recyclerview",
+        "com.google.android.material_material",
+    ],
+}

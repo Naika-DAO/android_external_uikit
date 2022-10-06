@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundedPreference">
+        <attr name="backgroundType" format="enum">
+            <enum name="top" value="0" />
+            <enum name="middle" value="1" />
+            <enum name="bottom" value="2" />
+            <enum name="full" value="3" />
+        </attr>
+        <attr name="useTintendStyle" format="boolean" />
+        <attr name="showActionArrow" format="boolean" />
+    </declare-styleable>
+</resources>
