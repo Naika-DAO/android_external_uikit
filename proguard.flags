@@ -1,0 +1,15 @@
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+
+-dontwarn io.naika.**
+-keep class io.naika.** { *; }
+-keep class okhttp.** { *; }
+-dontwarn org.web3j.protocol.**
+-keep class org.web3j.protocol.** { *; }
+-dontwarn com.fasterxml.jackson.databind.**
+-keep class com.fasterxml.jackson.core.** { *; }
+-keep interface com.fasterxml.jackson.core { *; }
+-keep class com.fasterxml.jackson.databind. { *; }
+-keep interface com.fasterxml.jackson.databind { *; }
+-keep class com.fasterxml.jackson.annotation. { *; }
+-keep interface com.fasterxml.jackson.annotation.* { *; }

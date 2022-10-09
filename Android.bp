@@ -6,7 +6,7 @@ android_library {
         "SettingsLib-search-defaults",
     ],
 
-    srcs: ["src/**/*.kt"],
+    srcs: ["src/**/*.kt", "src/**/*.java"],
     resource_dirs: [
         "res",
     ],
@@ -17,6 +17,32 @@ android_library {
         "androidx.cardview_cardview",
         "androidx.preference_preference",
         "androidx.recyclerview_recyclerview",
+        "androidx.security_security-crypto",
         "com.google.android.material_material",
+        "androidx.fragment_fragment-ktx",
+        "androidx.lifecycle_lifecycle-common-java8",
+        "androidx.lifecycle_lifecycle-viewmodel-ktx",
+        "androidx.lifecycle_lifecycle-livedata-ktx",
+        "com.google.android.material_material",
+        "kotlinx-coroutines-android-sv2",
+        "Naika-Pay",
+        "org.web3j.android",
     ],
+
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
+
+    manifest: "AndroidManifest.xml",
+}
+
+java_import {
+    name: "org.web3j.android",
+    jars: ["libs/web3/*.jar"],
+}
+
+android_library_import {
+    name: "androidx.security_security-crypto",
+    sdk_version: "current",
+    aars: ["libs/security-crypto-1.0.0.aar"],
 }

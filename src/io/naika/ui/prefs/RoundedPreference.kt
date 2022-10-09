@@ -18,7 +18,7 @@ import kotlin.math.roundToInt
 
 open class RoundedPreference : ExtendedPreference {
 
-    open val preferenceLayoutRes: Int = R.layout.naika_preference
+    open var preferenceLayoutRes: Int = R.layout.naika_preference
 
     var attributes: AttributeSet? = null
     var definedStyles: Int = 0
@@ -71,7 +71,6 @@ open class RoundedPreference : ExtendedPreference {
     constructor(context: Context) : super(context)
 
     init {
-        layoutResource = preferenceLayoutRes
         attributes.let {
             val style = context.obtainStyledAttributes(
                 it,
@@ -79,8 +78,10 @@ open class RoundedPreference : ExtendedPreference {
             )
             useTintentStyle = style.getBoolean(R.styleable.RoundedPreference_useTintendStyle, false)
             showActionArrow = style.getBoolean(R.styleable.RoundedPreference_showActionArrow, false)
+            preferenceLayoutRes = style.getInt(R.styleable.RoundedPreference_layout, R.layout.naika_preference)
             type = style.getInt(R.styleable.RoundedPreference_backgroundType, 3)
             style.recycle()
+            layoutResource = preferenceLayoutRes
         }
     }
 

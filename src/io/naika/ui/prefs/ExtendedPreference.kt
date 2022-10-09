@@ -30,6 +30,7 @@ open class ExtendedPreference : Preference {
     private val onClickList = ArrayList<OnPreferenceClickListener>()
 
     init {
+        isIconSpaceReserved = false
         setOnPreferenceClickListener {
             for (listener in onClickList) {
                 listener.onPreferenceClick(it)

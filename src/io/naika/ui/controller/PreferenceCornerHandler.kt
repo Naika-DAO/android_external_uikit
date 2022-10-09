@@ -8,17 +8,7 @@ import io.naika.ui.utils.CornersSet
 class PreferenceCornerHandler(private val screen: PreferenceScreen) {
 
     init {
-        for (i in 0 until screen.preferenceCount) {
-            val pref = screen.getPreference(i)
-            /*if (pref is RoundedPreference) {
-                pref.addOnPreferenceClickListener {
-                    screen.removePreference(it)
-                    update()
-                    true
-                }
-            }*/
-            update(i)
-        }
+        update()
     }
 
     private fun update(i: Int) {

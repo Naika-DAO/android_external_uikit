@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import io.naika.ui.R
 
-class DashboardRoundedPreference : RoundedPreference {
+class WalletPreference : RoundedPreference {
 
-    override var preferenceLayoutRes: Int = R.layout.naika_dashboard_preference
+    override var preferenceLayoutRes: Int = R.layout.naika_preference_wallet
 
     constructor(
         context: Context,

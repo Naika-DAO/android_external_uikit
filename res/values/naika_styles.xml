@@ -16,13 +16,12 @@
 <resources>
 
     <!-- Text Styles -->
-    <style name="dotTextPrimary">
+    <style name="UIKitTextPrimary">
         <item name="android:textSize">19sp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:fontFamily">@*android:string/config_headlineFontFamily</item>
     </style>
 
-    <style name="UIKitTextPrimaryMedium" parent="dotTextPrimary">
+    <style name="UIKitTextPrimaryMedium" parent="UIKitTextPrimary">
         <item name="android:fontFamily">@*android:string/config_headlineFontFamilyMedium</item>
     </style>
 
@@ -31,4 +30,26 @@
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
+    <style name="UIKItButtonMainAction.TextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/system_accent1_100</item>
+        <item name="android:fontFamily">@*android:string/config_headlineFontFamilyMedium</item>
+    </style>
+
+    <style name="UIKItButtonMainAction">
+        <item name="android:buttonStyle">@style/UIKItButtonMainAction</item>
+        <item name="android:background">@drawable/naika_button_background</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:textAppearance">@style/UIKItButtonMainAction.TextStyle</item>
+    </style>
+
+
+    <!-- Preferences -->
+
+    <!-- General -->
+    <style name="dotPreferenceBase">
+        <item name="android:layout_marginStart">@dimen/naika_pref_horizontal_padding</item>
+        <item name="android:layout_marginEnd">@dimen/naika_pref_horizontal_padding</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
 </resources>

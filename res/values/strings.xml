@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="web3_wallet_status_dot">•</string>
+    <string name="web3_wallet_title">Wallet</string>
+    <string name="web3_wallet_launch_title">Show Activity</string>
+    <string name="web3_wallet_connect">Click to setup</string>
+    <string name="web3_wallet_no_internet">Internet connection not found.</string>
+    <string name="web3_wallet_error">An error occurred.</string>
+</resources>
