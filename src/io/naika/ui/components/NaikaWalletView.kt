@@ -204,7 +204,7 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
                 updateByState(State.ERROR)
             }
         }
-        paymentConnection = payment.initialize(NetworkType.ETH_GOERLI) {
+        paymentConnection = payment.initialize(NetworkType.ETH_MAIN) {
             connectionSucceed {
                 Log.d(LOG_TAG, "connectionSucceed")
                 updateByState(State.NO_WALLET)
