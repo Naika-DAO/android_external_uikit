@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import io.naika.naikapay.Connection
+import io.naika.naikapay.ConnectionState
 import io.naika.naikapay.NetworkType
 import io.naika.naikapay.Payment
 import io.naika.naikapay.entity.AccountInfo
@@ -58,6 +59,8 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
     private val networkConnection: ConnectionLiveData
         get() = ConnectionLiveData(activity.application)
 
+    private var wasConnected = false
+
     private val payment by lazy(LazyThreadSafetyMode.NONE) {
         Payment(context)
     }
@@ -65,10 +68,9 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
     private val mainViewModel: Web3ViewModel
         get() = ViewModelProvider(activity)[Web3ViewModel::class.java]
 
-    private lateinit var paymentConnection: Connection
+    private var paymentConnection: Connection? = null
 
     private var storedState: State = State.NO_WALLET
-    private val validStates = arrayOf(State.NOT_CONNECTED.code, State.CONNECTED.code)
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -84,21 +86,18 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        startPaymentConnection()
-        post {
-            loadWallet()
-            findViewTreeLifecycleOwner()?.let { networkConnection.observe(it, this) }
-        }
+        tryPaymentConnection()
+        findViewTreeLifecycleOwner()?.let { networkConnection.observe(it, this) }
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         super.onRestoreInstanceState(state)
-        loadWallet()
+        tryPaymentConnection()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
-        loadWallet()
+        tryPaymentConnection()
     }
 
     private fun updateByState(state: State) {
@@ -108,10 +107,6 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
                 statusDot.tint(R.color.web3_wallet_status_ok)
                 //identityContainer.isVisible = true
                 walletLaunch.isVisible = true
-                if (storedState.code == 404 || storedState.code == -1) {
-                    startPaymentConnection()
-                    loadWallet()
-                }
                 setOnClickListener {
                     // Launch Show Activity
                 }
@@ -128,9 +123,7 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
                 identityContainer.isVisible = false
                 walletLaunch.isVisible = false
                 addressBalanceView.setText(R.string.web3_wallet_error)
-                setOnClickListener {
-                    connectWalletWithNewMethod()
-                }
+                setOnClickListener(null)
             }
             State.NO_WALLET -> {
                 statusDot.tint(R.color.web3_wallet_status_error)
@@ -198,29 +191,31 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
         }
     }
 
-    private fun startPaymentConnection() {
+    private fun tryPaymentConnection() {
         if (!mainViewModel.connectToNetwork()) {
-            post {
-                updateByState(State.ERROR)
-            }
+            updateByState(State.NOT_CONNECTED)
+            return
+        }
+        if (paymentConnection != null && paymentConnection!!.getState() == ConnectionState.Connected) {
+            loadWallet()
+            return
         }
         paymentConnection = payment.initialize(NetworkType.ETH_MAIN) {
             connectionSucceed {
-                Log.d(LOG_TAG, "connectionSucceed")
                 updateByState(State.NO_WALLET)
+                loadWallet()
             }
             connectionFailed {
-                Log.e(LOG_TAG, "Error", it)
                 updateByState(State.ERROR)
             }
             disconnected {
-                Log.d(LOG_TAG, "disconnected")
+                updateByState(State.NOT_CONNECTED)
             }
         }
     }
 
     override fun onDetachedFromWindow() {
-        paymentConnection.disconnect()
+        paymentConnection?.disconnect()
         super.onDetachedFromWindow()
     }
 
@@ -239,9 +234,9 @@ class NaikaWalletView : FrameLayout, Observer<Boolean> {
     }
 
     override fun onChanged(isConnected : Boolean) {
-        if (validStates.contains(storedState.code)) {
-            val newState = if (isConnected) State.CONNECTED else State.NOT_CONNECTED
-            updateByState(newState)
+        if (wasConnected != isConnected) {
+            tryPaymentConnection()
+            wasConnected = isConnected
         }
     }
 }
